@@ -9,9 +9,12 @@
       font-family: Arial, sans-serif;
       line-height: 1.6;
       margin: 20px;
+      max-width: 800px;
+      margin: 0 auto;
     }
     h1 {
       color: #333;
+      text-align: center;
     }
     ul {
       list-style: none;
@@ -26,6 +29,32 @@
     }
     a:hover {
       text-decoration: underline;
+    }
+    #search {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 14px;
+      color: #555;
+    }
+    .back-to-top {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 15px;
+      background-color: #007bff;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+    .back-to-top:hover {
+      background-color: #0056b3;
     }
   </style>
 </head>
@@ -101,5 +130,73 @@
     <li><a href="72-taiwan-pascal-thien-ah-koon-avocat-faire-profil-bas-s-intégrer-laisser-venir.html">Episode 72 - Taiwan - Pascal Thien Ah Koon</a></li>
     <!-- Add more links as needed -->
   </ul>
+
+  <!-- Pagination -->
+  <div class="pagination">
+    <button onclick="prevPage()">Previous</button>
+    <span id="page-number">Page 1</span>
+    <button onclick="nextPage()">Next</button>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>&copy; 2024 Podcast Name. All rights reserved.</p>
+    <a href="#" class="back-to-top" onclick="scrollToTop()">Back to Top</a>
+  </div>
+
+  <script>
+    // Search Functionality
+    function filterEpisodes() {
+      const query = document.getElementById('search').value.toLowerCase();
+      const items = document.querySelectorAll('#episode-list li');
+      items.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        item.style.display = text.includes(query) ? '' : 'none';
+      });
+    }
+
+    // Back to Top Functionality
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Pagination Functionality
+    const itemsPerPage = 10;
+    let currentPage = 1;
+
+    function showPage(page) {
+      const items = document.querySelectorAll('#episode-list li');
+      const totalItems = items.length;
+      const totalPages = Math.ceil(totalItems / itemsPerPage);
+      document.getElementById('page-number').textContent = `Page ${page}`;
+
+      items.forEach((item, index) => {
+        item.style.display = index >= (page - 1) * itemsPerPage && index < page * itemsPerPage ? '' : 'none';
+      });
+
+      // Disable buttons if necessary
+      document.querySelector('.pagination button:first-child').disabled = page === 1;
+      document.querySelector('.pagination button:last-child').disabled = page === totalPages;
+    }
+
+    function prevPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        showPage(currentPage);
+      }
+    }
+
+    function nextPage() {
+      const totalItems = document.querySelectorAll('#episode-list li').length;
+      const totalPages = Math.ceil(totalItems / itemsPerPage);
+      if (currentPage < totalPages) {
+        currentPage++;
+        showPage(currentPage);
+      }
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => showPage(1));
+  </script>
 </body>
 </html>
